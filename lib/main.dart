@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        locale: snapshot.data ?? allTranslations.locale,
+        locale: Locale('de'),
         supportedLocales: allTranslations.supportedLocales(),
         theme: ThemeData(
           primarySwatch: Colors.cyan,
