@@ -1,0 +1,12 @@
+{
+  "GENERAL": {
+    "OK": "Okay",
+    "CANCEL": "Abbrechen",
+    "CLOSE": "Schließen",
+    "OPEN": "Öffnen",
+    "EDIT": "Bearbeiten",
+    "DELETE": "Löschen",
+    "ADD": "Erstellen",
+    "ADD_ALT": "Hinzufügen"
+  }
+}
