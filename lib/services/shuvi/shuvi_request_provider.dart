@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio_flutter_transformer/dio_flutter_transformer.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tog3ther/model/response/Response.dart';
 import 'package:tog3ther/model/searchcluster/SearchCluster.dart';
@@ -47,13 +48,16 @@ class ShuviRequestProvider {
 
     httpManager.transformer = FlutterTransformer();
 
-    httpManager.interceptors.add(
-        DioCacheManager(
-            CacheConfig(
-              baseUrl: "https://api.thepublictransport.de",
-            )
-        ).interceptor
-    );
+    if (!kIsWeb)  {
+      httpManager.interceptors.add(
+          DioCacheManager(
+              CacheConfig(
+                baseUrl: "https://api.thepublictransport.de",
+              )
+          ).interceptor
+      );
+    }
+
     var rawResponse;
 
     try {
@@ -102,13 +106,16 @@ class ShuviRequestProvider {
 
     httpManager.transformer = FlutterTransformer();
 
-    httpManager.interceptors.add(
-        DioCacheManager(
-            CacheConfig(
+    if (!kIsWeb)  {
+      httpManager.interceptors.add(
+          DioCacheManager(
+              CacheConfig(
                 baseUrl: "https://api.thepublictransport.de",
-            )
-        ).interceptor
-    );
+              )
+          ).interceptor
+      );
+    }
+
 
     var rawResponse;
 

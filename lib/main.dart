@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    StyledToast(
+    return StyledToast(
       textStyle: TextStyle(fontSize: 16.0, color: Colors.white),
       backgroundColor: Color(0x99000000),
       borderRadius: BorderRadius.circular(5.0),
@@ -149,14 +149,10 @@ class _MyHomePageState extends State<MyHomePage> {
       statusBarIconBrightness: Brightness.light,
     ));
 
-    if (kIsWeb) {
+    prepareApp().then((value) async {
+      await Future.delayed(Duration(seconds: 1));
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => OnewayPage()));
-    } else {
-      prepareApp().then((value) async {
-        await Future.delayed(Duration(seconds: 1));
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => OnewayPage()));
-      });
-    }
+    });
   }
 
   @override
@@ -189,7 +185,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> prepareApp() async {
     await _applyConfig();
-    await _applyAppInformation();
+    if (!kIsWeb) {
+      await _applyAppInformation();
+    }
   }
 
   Future<void> _applyConfig() async {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -72,19 +73,31 @@ class _SearchPageState extends State<SearchPage> {
                   return await getFeatures(pattern);
                 },
                 itemBuilder: (context, Feature suggestion) {
-                  return ListTile(
-                    leading: Icon(Icons.location_on),
-                    title: Text(
-                      generateAddress(suggestion),
-                      overflow: TextOverflow.ellipsis,
+                  return Listener(
+                    child: ListTile(
+                      leading: Icon(Icons.location_on),
+                      title: Text(
+                        generateAddress(suggestion),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
+                    onPointerDown: (_) async {
+                      if (kIsWeb) {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                        await prefs.setString('last_searched', suggestion.toRawJson());
+                        Navigator.of(context).pop(suggestion);
+                      }
+                    },
                   );
                 },
                 onSuggestionSelected: (Feature suggestion) async {
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  if (!kIsWeb) {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-                  await prefs.setString('last_searched', suggestion.toRawJson());
-                  Navigator.of(context).pop(suggestion);
+                    await prefs.setString('last_searched', suggestion.toRawJson());
+                    Navigator.of(context).pop(suggestion);
+                  }
                 },
               ),
             ),

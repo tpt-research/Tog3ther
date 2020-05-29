@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  tog3ther-web:
+    image: pdesire/tog3ther-web
+    build: .
+    ports:
+      - "8084:80"

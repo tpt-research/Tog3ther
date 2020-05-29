@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_flutter_transformer/dio_flutter_transformer.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tog3ther/model/geojson/geojson.dart';
 import 'package:tog3ther/util/photon_util.dart';
 
@@ -49,13 +50,15 @@ class PhotonService {
 
     httpClient.transformer = FlutterTransformer();
 
-    httpClient.interceptors.add(
-        DioCacheManager(
-            CacheConfig(
-                baseUrl: PHOTON_URL
-            )
-        ).interceptor
-    );
+    if (!kIsWeb) {
+      httpClient.interceptors.add(
+          DioCacheManager(
+              CacheConfig(
+                  baseUrl: PHOTON_URL
+              )
+          ).interceptor
+      );
+    }
 
     var response = await httpClient.get(
         '/reverse',
